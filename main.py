@@ -6,7 +6,11 @@ from datetime import datetime, timedelta
 
 def bump_action(execution_count):
     print(f"Execution {execution_count}: Typing '/bump' and pressing Enter...")
-    for char in "/bump":
+
+    pyautogui.keyDown("shift")
+    pyautogui.press("7")
+    pyautogui.keyUp("shift")
+    for char in "bump":
         pyautogui.typewrite(char)
         time.sleep(random.uniform(0.1, 0.5))
     pyautogui.press("enter")
