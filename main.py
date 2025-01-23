@@ -172,7 +172,16 @@ def handle_verification_code(text):
             time.sleep(random.uniform(0.1, 0.5))
             pyautogui.press("enter")
             time.sleep(random.uniform(0.5, 1))
-            click_discard_action()
+            click_chatbar_action()
+
+            pyautogui.press("enter")
+            for char in "/farm":
+                pyautogui.typewrite(char)
+                time.sleep(random.uniform(0.1, 0.5))
+            pyautogui.press("enter")
+            time.sleep(random.uniform(0.1, 0.5))
+            pyautogui.press("enter")
+            time.sleep(random.uniform(0.5, 1))
             print(f"Entered verification code: /verify {code}")
         except IndexError:
             print("Error extracting the code. Text:", text)
