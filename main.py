@@ -3,10 +3,25 @@ import random
 import pyautogui
 from datetime import datetime, timedelta
 
+pyautogui.FAILSAFE = False
+
+import os
+os.environ["DISPLAY"] = ":99"
+
+def focus_discord_window():
+    """
+    Setzt den Fokus auf das Discord-Fenster (Chromium).
+    """
+    result = os.system("xdotool search --name 'Discord' windowactivate")
+    if result != 0:
+        print("[WARN] Discord-Fenster nicht gefunden.")
+    else:
+        print("[INFO] Fokus auf Discord gesetzt.")
 
 def bump_action(execution_count):
     print(f"Execution {execution_count}: Typing '/bump' and pressing Enter...")
 
+    focus_discord_window()
     pyautogui.typewrite("/")
     for char in "bump":
         pyautogui.typewrite(char)
@@ -19,7 +34,7 @@ def bump_action(execution_count):
 execution_count = 0
 
 
-time.sleep(5)
+time.sleep(26 * 60)
 
 while True:
 
