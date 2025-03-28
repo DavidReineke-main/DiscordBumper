@@ -4,7 +4,8 @@ import random
 import config
 import pyautogui
 from logger import log
-from utils import click_chatbar_action
+from utils import click_chatbar_action, click_action, RECT_DISCARD
+
 
 def handle_verification_code(text):
     """Prüft den Text auf Verifizierungscodes und gibt sie ein."""
@@ -29,6 +30,9 @@ def handle_verification_code(text):
 
             pyautogui.press("enter")
             pyautogui.press("enter")
+
+            time.sleep(2)
+            click_action(RECT_DISCARD)
             log(f"[INFO] Entered verification code: /verify {code}")
 
         except IndexError:

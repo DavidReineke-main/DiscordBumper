@@ -5,7 +5,7 @@ import config
 from handleVerification import handle_verification_code
 from logger import log
 from screenutil import switch_to_tab, focus_chromium_window
-from utils import capture_and_recognize_text, click_action
+from utils import capture_and_recognize_text, click_action, RECT_FARM_BUTTON
 
 
 def farm():
@@ -14,7 +14,7 @@ def farm():
     switch_to_tab(2)
 
     log(f"[INFO] Current Farmtime: {config.FARMTIME}s")
-    click_action()
+    click_action(RECT_FARM_BUTTON)
 
     detected_text = capture_and_recognize_text()
     handle_verification_code(detected_text)

@@ -1,7 +1,7 @@
 import cv2
 import mss
 import numpy as np
-from utils import RECT_FARM_BUTTON, RECT_VERIFY, RECT_CHATBAR
+from utils import RECT_FARM_BUTTON, RECT_VERIFY, RECT_CHATBAR, RECT_DISCARD
 
 def draw_rectangles_on_screenshot(output_path="debug_ui_overlay.png"):
     with mss.mss() as sct:
@@ -12,7 +12,8 @@ def draw_rectangles_on_screenshot(output_path="debug_ui_overlay.png"):
     rectangles = [
         (RECT_FARM_BUTTON, (0, 0, 255)),    # Rot
         (RECT_VERIFY, (0, 255, 0)),         # Grün
-        (RECT_CHATBAR, (255, 0, 0))        # Blau
+        (RECT_CHATBAR, (255, 0, 0)),        # Blau
+        (RECT_DISCARD, (100, 100, 0))        # Blau
     ]
 
     for rect, color in rectangles:
