@@ -10,13 +10,13 @@ os.environ["DISPLAY"] = ":99"
 
 def focus_discord_window():
     """
-    Setzt den Fokus auf das Discord-Fenster (Chromium).
+    Aktiviert das Chromium-Discord-Fenster anhand der Fensterklasse.
     """
-    result = os.system("xdotool search --name 'Discord' windowactivate")
+    result = os.system("xdotool search --onlyvisible --class chromium windowactivate")
     if result != 0:
-        print("[WARN] Discord-Fenster nicht gefunden.")
+        print("[WARN] Discord-Fenster (Chromium) nicht gefunden.")
     else:
-        print("[INFO] Fokus auf Discord gesetzt.")
+        print("[INFO] Fokus auf Discord (Chromium) gesetzt.")
 
 def bump_action(execution_count):
     print(f"Execution {execution_count}: Typing '/bump' and pressing Enter...")
@@ -34,7 +34,7 @@ def bump_action(execution_count):
 execution_count = 0
 
 
-time.sleep(26 * 60)
+time.sleep(6 * 60)
 
 while True:
 
