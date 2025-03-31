@@ -3,7 +3,7 @@ from datetime import datetime, timezone, timedelta
 LOGFILE_PATH = "/root/DiscordBumper/bot.log"  # Passe den Pfad ggf. an
 LOG_TIMEZONE = timezone(timedelta(hours=1))   # GMT+1
 
-def log(message, *, to_console=True):
+def log(message, to_console=False):
     now = datetime.now(LOG_TIMEZONE).strftime("%Y-%m-%d %H:%M:%S")
     line = f"[{now}] {message}"
 

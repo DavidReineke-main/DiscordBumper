@@ -11,13 +11,13 @@ def handle_verification_code(text):
     """Prüft den Text auf Verifizierungscodes und gibt sie ein."""
 
     if "Antibot Verification" in text and "Use /verify" in text:
-        log("[INFO] Verification text detected!")
+        log("[INFO] Verification text detected!", True)
         config.VERIFICATION_STRIKES += 1
-        log(f"[SECURITY] Verification strikes: {config.VERIFICATION_STRIKES}")
+        log(f"[SECURITY] Verification strikes: {config.VERIFICATION_STRIKES}", True)
 
         if config.VERIFICATION_STRIKES >= 3:
             config.FARMING = False
-            log("[SECURITY] Deaktiviere FARMING wegen 3x Verifizierung")
+            log("[SECURITY] Deaktiviere FARMING wegen 3x Verifizierung", True)
 
         try:
             code = text.split("code to continue playing:")[1].split(".")[0].strip()
@@ -33,7 +33,14 @@ def handle_verification_code(text):
 
             time.sleep(2)
             click_action(RECT_DISCARD)
-            log(f"[INFO] Entered verification code: /verify {code}")
+            log(f"[INFO] Entered verification code: /verify {code}", True)
+
+            for char in "/play " + code:
+                pyautogui.typewrite(char)
+                time.sleep(random.uniform(0.1, 0.5))
+
+            pyautogui.press("enter")
+            pyautogui.press("enter")
 
         except IndexError:
             log("[ERROR] Failed to extract verification code")
