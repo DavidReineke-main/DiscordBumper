@@ -35,7 +35,7 @@ def handle_verification_code(text):
             click_action(RECT_DISCARD)
             log(f"[INFO] Entered verification code: /verify {code}", True)
 
-            for char in "/play " + code:
+            for char in "/play":
                 pyautogui.typewrite(char)
                 time.sleep(random.uniform(0.1, 0.5))
 
