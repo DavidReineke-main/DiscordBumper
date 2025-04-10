@@ -12,6 +12,7 @@ from bump import bump_action
 from farm import farm
 from keyBoardListenener import control_loop
 from logger import log
+from saveSettingState import load_setting_state
 from ui import draw_rectangles_on_screenshot
 
 
@@ -23,9 +24,14 @@ BUMP_INTERVAL = 2 * 60 * 60  # alle 2 Stunden
 next_bump = datetime.now() + timedelta(seconds=15)
 
 
-config.FARMING = True
+
+config.FARMING = False
 config.BUMPING = True
 
+load_setting_state()
+
+log('FARMING set to ' + str(config.FARMING), True)
+log('BUMPING set to ' + str(config.BUMPING), True)
 
 config.FARMTIME = 2.0
 config.NEXT_FARMTIME = datetime.now()

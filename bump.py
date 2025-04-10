@@ -14,6 +14,7 @@ def bump_action(execution_count):
 
     focus_chromium_window()
     switch_to_tab(1)
+    time.sleep(3)
     pyautogui.typewrite("/")
     for char in "bump":
         pyautogui.typewrite(char)

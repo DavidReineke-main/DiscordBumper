@@ -2,6 +2,9 @@
 from logger import log
 import config
 
+from saveSettingState import save_setting_state
+
+
 def control_loop():
     while True:
         try:
@@ -9,12 +12,15 @@ def control_loop():
             if cmd == "f":
                 config.FARMING = not config.FARMING
                 state = "aktiviert" if config.FARMING else "deaktiviert"
+                save_setting_state(config.FARMING, config.BUMPING)
                 log(f"[TOGGLE] FARMING wurde {state}")
             elif cmd == "b":
                 config.BUMPING = not config.BUMPING
                 state = "aktiviert" if config.BUMPING else "deaktiviert"
                 log(f"[TOGGLE] BUMPING wurde {state}")
+                save_setting_state(config.FARMING, config.BUMPING)
             elif cmd == "q":
+                save_setting_state(config.FARMING, config.BUMPING)
                 log("[EXIT] Beende Script...")
                 exit(0)
         except Exception as e:

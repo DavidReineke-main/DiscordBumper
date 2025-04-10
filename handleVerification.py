@@ -52,7 +52,3 @@ def handle_verification_code(text):
 
         # Kein Verifizierungsfehler → Strike reset
         config.VERIFICATION_STRIKES = 0
-
-    else:
-        # Kein Verifizierungstext → Strike reset
-        config.VERIFICATION_STRIKES = 0
