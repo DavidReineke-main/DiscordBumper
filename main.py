@@ -47,6 +47,8 @@ log(f'DAILY set to {config.DAILY}')
 log(f'GREENHOUSE set to {config.GREENHOUSE}')
 log(f'LASTVERIFY: {config.LASTVERIFY.strftime("%H:%M:%S")}')
 
+switch_to_tab(config.CURRENTTAB, True)
+
 # Bump Initialisierung
 log("[INFO] Lade letzte Bump-Zeit...")
 last_bump = load_last_bump_time()

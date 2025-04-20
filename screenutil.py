@@ -17,12 +17,12 @@ def focus_chromium_window():
     except Exception as e:
         log(f"[ERROR] Fehler beim Setzen des Fokus auf Chromium: {e}", True)
 
-def switch_to_tab(tab_index):
+def switch_to_tab(tab_index, force = False):
     """
     Wechselt auf einen Tab im aktiven Chromium-Fenster via Tastenkombination.
     """
     try:
-        if config.CURRENTTAB == tab_index:
+        if config.CURRENTTAB == tab_index and not force:
             return
 
         focus_chromium_window()
