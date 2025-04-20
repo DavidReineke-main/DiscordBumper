@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import json
 import config
@@ -6,10 +7,19 @@ from logger import log
 
 STATE_FILE = "/root/DiscordBumper/state/settings_state.json"
 
-def save_setting_state(FARMING, BUMPING):
+def save_setting_state():
     os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
     with open(STATE_FILE, "w") as f:
-        json.dump({"FARMING": FARMING, "BUMPING": BUMPING}, f)
+        json.dump({
+            "FARMING": config.FARMING,
+            "BUMPING": config.BUMPING,
+            "CURRENTTAB": config.CURRENTTAB,
+            "GREENHOUSE": config.GREENHOUSE,
+            "NEXT_DAILY_RUN": config.NEXT_DAILY_RUN.isoformat(),
+            "NEXT_GREENHOUSE_RUN": config.NEXT_GREENHOUSE_RUN.isoformat(),
+            "LASTVERIFY": config.LASTVERIFY.isoformat(),
+            "DAILY": config.DAILY
+        }, f)
 
 def load_setting_state():
 
@@ -23,6 +33,13 @@ def load_setting_state():
             data = json.load(f)
             config.FARMING = data["FARMING"]
             config.BUMPING = data["BUMPING"]
+            config.CURRENTTAB = data["CURRENTTAB"]
+            config.GREENHOUSE = data["GREENHOUSE"]
+            config.NEXT_DAILY_RUN = datetime.fromisoformat(data["NEXT_DAILY_RUN"])
+            config.NEXT_GREENHOUSE_RUN = datetime.fromisoformat(data["NEXT_GREENHOUSE_RUN"])
+            config.LASTVERIFY = datetime.fromisoformat(data["LASTVERIFY"])
+            config.DAILY = data["DAILY"]
+
             return None
         except Exception as e:
             log(e, True)

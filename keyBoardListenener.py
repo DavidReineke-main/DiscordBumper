@@ -12,15 +12,15 @@ def control_loop():
             if cmd == "f":
                 config.FARMING = not config.FARMING
                 state = "aktiviert" if config.FARMING else "deaktiviert"
-                save_setting_state(config.FARMING, config.BUMPING)
+                save_setting_state()
                 log(f"[TOGGLE] FARMING wurde {state}")
             elif cmd == "b":
                 config.BUMPING = not config.BUMPING
                 state = "aktiviert" if config.BUMPING else "deaktiviert"
                 log(f"[TOGGLE] BUMPING wurde {state}")
-                save_setting_state(config.FARMING, config.BUMPING)
+                save_setting_state()
             elif cmd == "q":
-                save_setting_state(config.FARMING, config.BUMPING)
+                save_setting_state()
                 log("[EXIT] Beende Script...")
                 exit(0)
         except Exception as e:

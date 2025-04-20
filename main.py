@@ -5,98 +5,98 @@ import os
 from datetime import datetime, timedelta
 import pyautogui
 import config
+
+from daily import daily
+from greenhouse import greenhouse
 from saveBumpState import load_last_bump_time
-
-
+from saveSettingState import load_setting_state, save_setting_state
 from bump import bump_action
 from farm import farm
 from keyBoardListenener import control_loop
 from logger import log
-from saveSettingState import load_setting_state
 from ui import draw_rectangles_on_screenshot
+from screenutil import switch_to_tab, focus_chromium_window
+from utils import click_action, RECT_GREENHOUSE, RECT_EMPTY_GREENHOUSE, RECT_BACK, RECT_DAILY
 
-
+# Setup
 pyautogui.FAILSAFE = False
 os.environ["DISPLAY"] = ":99"
 
+BUMP_INTERVAL = 2 * 60 * 60  # 2 Stunden
 execution_count = 0
-BUMP_INTERVAL = 2 * 60 * 60  # alle 2 Stunden
-next_bump = datetime.now() + timedelta(seconds=15)
 
-
-
-config.FARMING = False
+# Initialwerte
+config.FARMING = True
 config.BUMPING = True
-
-load_setting_state()
-
-log('FARMING set to ' + str(config.FARMING), True)
-log('BUMPING set to ' + str(config.BUMPING), True)
-
+config.DAILY = True
+config.GREENHOUSE = True
 config.FARMTIME = 2.0
-config.NEXT_FARMTIME = datetime.now()
 config.VERIFICATION_STRIKES = 0
+config.NEXT_FARMTIME = datetime.now()
+config.NEXT_DAILY_RUN = datetime.now()
+config.NEXT_GREENHOUSE_RUN = datetime.now()
+config.CURRENTTAB = 1
+config.LASTVERIFY = datetime.now()
 
-config.now = datetime.now()
-
-# ----- Startup Pause -----
-log("[INFO] Startup pause, waiting 5 Seconds to begin...", True)
-time.sleep(5)
-
-# ----- UI im separaten Thread starten -----
-log("[INFO] Grabbing Debug Screenshot", True)
+# Lade gespeicherte Zustände
 draw_rectangles_on_screenshot()
+load_setting_state()
+log(f'FARMING set to {config.FARMING}')
+log(f'BUMPING set to {config.BUMPING}')
+log(f'DAILY set to {config.DAILY}')
+log(f'GREENHOUSE set to {config.GREENHOUSE}')
+log(f'LASTVERIFY: {config.LASTVERIFY.strftime("%H:%M:%S")}')
 
-# ----- Listener Thread -----
-log("[INFO] Starting Listener Thread", True)
-listener_thread = threading.Thread(target=control_loop, daemon=True)
-listener_thread.start()
-
-log("[INFO] Lade letzte Bump-Zeit...", True)
-
+# Bump Initialisierung
+log("[INFO] Lade letzte Bump-Zeit...")
 last_bump = load_last_bump_time()
-
 if last_bump is None:
-    log("[INFO] Kein vorheriger Bump gefunden. Warte 10 Sekunden zum Start.", True)
     next_bump = datetime.now() + timedelta(seconds=10)
 else:
     elapsed = (datetime.now() - last_bump).total_seconds()
     if elapsed >= BUMP_INTERVAL:
-        log("[INFO] Letzter Bump ist überfällig – führe sofort aus.", True)
         next_bump = datetime.now()
     else:
-        wait_time = BUMP_INTERVAL - elapsed
-        next_bump = datetime.now() + timedelta(seconds=wait_time)
-        log(f"[INFO] Letzter Bump war um {last_bump.strftime('%H:%M:%S')}, nächster in {int(wait_time)}s", True)
+        next_bump = datetime.now() + timedelta(seconds=(BUMP_INTERVAL - elapsed))
 
+# Keyboard Listener starten
+thread = threading.Thread(target=control_loop, daemon=True)
+thread.start()
+log("[INFO] Startup pause – 5 Sekunden")
+time.sleep(0)
 
-# ----- Main Loop -----
-log("[INFO] Starting Main Loop...", True)
-time.sleep(2)
-
-
+# ----- MAIN LOOP -----
+log("[INFO] Starte Hauptloop...")
 while True:
-    config.now = datetime.now()
+    now = datetime.now()
 
-    #log(f'[DEBUG] START of execution')
-
-    # ----- Bumping Logic -----
-    if config.now >= next_bump and config.BUMPING:
+    # ----- BUMP -----
+    if config.BUMPING and now >= next_bump:
         bump_action(execution_count)
-        execution_count = execution_count + 1
+        next_bump = now + timedelta(seconds=(BUMP_INTERVAL + random.randint(0, 30)))
+        log(f"[BUMP] Next bump at {next_bump.strftime('%H:%M:%S')}")
 
-        next_bump = config.now + timedelta(seconds=(BUMP_INTERVAL + random.randint(0, 30)))
-        log(f"[INFO] Next Bump planned at {next_bump.strftime('%H:%M:%S')}", True)
-
-    # ----- Security to do nothing else if the Bump is about to start or has started 10 seconds ago -----
-    elif 0 <= (next_bump - config.now).total_seconds() <= 10:
-        log(f'[DEBUG] SKIPPED execution: next Bump in {int((next_bump - config.now).total_seconds())}s', True)
+    elif 0 <= (next_bump - now).total_seconds() <= 10:
+        log(f"[BUMP] Skipping actions, bump in {int((next_bump - now).total_seconds())}s")
         time.sleep(1)
         continue
 
-    # ----- Farming Logic -----
-    elif config.now >= config.NEXT_FARMTIME and config.FARMING:
+    # ----- FARMING -----
+    if config.FARMING and now >= config.NEXT_FARMTIME:
         farm()
 
-    #log(f'[DEBUG] END of execution')
-    time.sleep(1)  # kleine Pause, damit CPU geschont wird
+    # ----- DAILY -----
+    if config.DAILY and now >= config.NEXT_DAILY_RUN:
+        if (now - config.LASTVERIFY) <= timedelta(seconds=60):
+            daily()
+        else:
+            log("[DAILY] Waiting for recent verification")
+
+    # ----- GREENHOUSE -----
+    if config.GREENHOUSE and now >= config.NEXT_GREENHOUSE_RUN:
+        if (now - config.LASTVERIFY) <= timedelta(seconds=60):
+            greenhouse()
+        else:
+            log("[GREENHOUSE] Skipped due to missing recent verification")
+
+    time.sleep(1)

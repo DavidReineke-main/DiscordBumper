@@ -1,14 +1,15 @@
+from datetime import datetime
 import time
 import random
 
 import config
 import pyautogui
 from logger import log
-from utils import click_chatbar_action, click_action, RECT_DISCARD
+from utils import click_action, RECT_DISCARD, RECT_CHATBAR
 
 
 def handle_verification_code(text):
-    """Prüft den Text auf Verifizierungscodes und gibt sie ein."""
+    """Prüft den Text auf Verifizierungscodes und gibt sie ein. Gibt True bei Erfolg, False bei Fail."""
 
     if "Antibot Verification" in text and "Use /verify" in text:
         log("[INFO] Verification text detected!", True)
@@ -17,11 +18,14 @@ def handle_verification_code(text):
 
         if config.VERIFICATION_STRIKES >= 3:
             config.FARMING = False
-            log("[SECURITY] Deaktiviere FARMING wegen 3x Verifizierung", True)
+            config.DAILY = False
+            config.GREENHOUSE = False
+            log("[SECURITY] Deaktiviere alle Features wegen 3x Verify-Fail", True)
+            return False  # <<< Abbrechen hier
 
         try:
             code = text.split("code to continue playing:")[1].split(".")[0].strip()
-            click_chatbar_action()
+            click_action(RECT_CHATBAR)
             time.sleep(random.uniform(0.1, 0.5))
 
             for char in "/verify " + code:
@@ -42,13 +46,22 @@ def handle_verification_code(text):
             pyautogui.press("enter")
             pyautogui.press("enter")
 
+            return True  # <<< Erfolg
+
         except IndexError:
             log("[ERROR] Failed to extract verification code")
+            return
 
     elif "You must wait" in text:
-        new_time = float(text.split(":")[1].split(" ")[1].strip())
-        log(f"[INFO] Adjusted FARMTIME to {new_time}s")
-        config.FARMTIME = new_time
+        try:
+            new_time = float(text.split(":")[1].split(" ")[1].strip())
+            log(f"[INFO] Adjusted FARMTIME to {new_time}s")
+            config.FARMTIME = new_time
+            config.LASTVERIFY = datetime.now()
+            config.VERIFICATION_STRIKES = 0
+        except Exception as e:
+            log(f"[ERROR] Could not parse wait time: {e}")
+        return True
 
-        # Kein Verifizierungsfehler → Strike reset
-        config.VERIFICATION_STRIKES = 0
+    return True
+

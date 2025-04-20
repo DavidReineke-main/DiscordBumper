@@ -4,21 +4,20 @@ from PIL import Image
 import pytesseract
 
 # Konfiguration der Bildschirmbereiche
-RECT_FARM_BUTTON = {"x1": 1443, "y1": 935, "width": 67, "height": 35}
-RECT_VERIFY = {"x1": 1443, "y1": 835, "width": 370, "height": 100}
-RECT_CHATBAR = {"x1": 1460, "y1": 995, "width": 100, "height": 30}
-RECT_DISCARD = {"x1": 1700, "y1": 952, "width": 60, "height": 10}
+RECT_FARM_BUTTON = {"x1": 450, "y1": 920, "width": 67, "height": 35}
+RECT_VERIFY = {"x1": 450, "y1": 820, "width": 370, "height": 100}
+RECT_CHATBAR = {"x1": 470, "y1": 995, "width": 100, "height": 30}
+RECT_DISCARD = {"x1": 710, "y1": 952, "width": 60, "height": 10}
+RECT_BACK = {"x1": 520, "y1": 920, "width": 67, "height": 35}
+RECT_DAILY = {"x1": 550, "y1":880, "width": 67, "height": 35}
+RECT_GREENHOUSE = {"x1": 450, "y1": 845, "width": 67, "height": 35}
+RECT_EMPTY_GREENHOUSE = {"x1": 480, "y1": 880, "width": 67, "height": 35}
 
 pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
 def click_action(rect):
     x = rect["x1"] + rect["width"] // 2
     y = rect["y1"] + rect["height"] // 2
-    pyautogui.click(x, y)
-
-def click_chatbar_action():
-    x = RECT_CHATBAR["x1"] + RECT_CHATBAR["width"] // 2
-    y = RECT_CHATBAR["y1"] + RECT_CHATBAR["height"] // 2
     pyautogui.click(x, y)
 
 def capture_and_recognize_text():
