@@ -18,8 +18,10 @@ def save_setting_state():
             "NEXT_DAILY_RUN": config.NEXT_DAILY_RUN.isoformat(),
             "LAST_GREENHOUSE_RUN": config.LAST_GREENHOUSE_RUN.isoformat(),
             "LASTVERIFY": config.LASTVERIFY.isoformat(),
+            "LASTBOOST": config.LASTBOOST.isoformat(),
             "DAILY": config.DAILY,
-            "STOPPED": config.STOPPED
+            "STOPPED": config.STOPPED,
+            "BOOSTING": config.BOOSTING
         }, f)
 
 def load_setting_state():
@@ -41,6 +43,8 @@ def load_setting_state():
             config.LASTVERIFY = datetime.fromisoformat(data["LASTVERIFY"])
             config.DAILY = data["DAILY"]
             config.STOPPED = data["STOPPED"]
+            config.BOOSTING = data["BOOSTING"]
+            config.LASTBOOST = datetime.fromisoformat(data["LASTBOOST"])
 
             return None
         except Exception as e:

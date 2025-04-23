@@ -16,6 +16,12 @@ RECT_EMPTY_GREENHOUSE = {"x1": 480, "y1": 880, "width": 67, "height": 35}
 RECT_VERIFY_CODE = {"x1": 765, "y1": 875, "width": 50, "height": 35}
 RECT_MENU = {"x1": 700, "y1": 915, "width": 50, "height": 35}
 
+RECT_BACK_BOOST = {"x1": 450, "y1": 915, "width": 50, "height": 35}
+RECT_BOOST = {"x1": 670, "y1": 875, "width": 50, "height": 35}
+RECT_BOOST1 = {"x1": 450, "y1": 875, "width": 50, "height": 35}
+RECT_BOOST2 = {"x1": 600, "y1": 875, "width": 50, "height": 35}
+RECT_BOOST3 = {"x1": 750, "y1": 875, "width": 50, "height": 35}
+
 pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
 def click_action(rect):

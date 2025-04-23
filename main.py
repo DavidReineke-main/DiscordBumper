@@ -7,6 +7,7 @@ import pyautogui
 import config
 import pyperclip
 
+from boost import boost
 from daily import daily
 from greenhouse import greenhouse
 from handleVerification import handle_verification_code
@@ -26,23 +27,23 @@ pyautogui.FAILSAFE = False
 os.environ["DISPLAY"] = ":99"
 
 
-start_x, start_y = 765, 880
-end_x, end_y = 815, 880
+#start_x, start_y = 765, 880
+#end_x, end_y = 815, 880
 
-time.sleep(1)  # kleine Pause vor dem Start
+#time.sleep(1)  # kleine Pause vor dem Start
 
 # Maus bewegen und ziehen
-pyautogui.moveTo(start_x, start_y, duration=0.2)
-pyautogui.mouseDown()
-pyautogui.moveTo(end_x, end_y, duration=0.2)
-pyautogui.mouseUp()
+#pyautogui.moveTo(start_x, start_y, duration=0.2)
+#pyautogui.mouseDown()
+#pyautogui.moveTo(end_x, end_y, duration=0.2)
+#pyautogui.mouseUp()
 
-copied_text = pyperclip.paste()
-print("Kopierter Text:", copied_text)
+#copied_text = pyperclip.paste()
+#print("Kopierter Text:", copied_text)
 
 # Kopieren
-time.sleep(0.1)
-pyautogui.hotkey("ctrl", "c")
+#time.sleep(0.1)
+#pyautogui.hotkey("ctrl", "c")
 
 BUMP_INTERVAL = 2 * 60 * 60  # 2 Stunden
 execution_count = 0
@@ -52,6 +53,7 @@ config.FARMING = True
 config.BUMPING = False
 config.DAILY = True
 config.GREENHOUSE = True
+config.BOOSTING = True
 config.FARMTIME = 2.0
 config.VERIFICATION_STRIKES = 0
 config.NEXT_FARMTIME = datetime.now()
@@ -59,6 +61,7 @@ config.NEXT_DAILY_RUN = datetime.now()
 config.LAST_GREENHOUSE_RUN = datetime.now()
 config.CURRENTTAB = 1
 config.LASTVERIFY = datetime.now()
+config.LASTBOOST = datetime.now()
 config.STOPPED = False
 
 
@@ -114,6 +117,9 @@ while True:
         time.sleep(2)
         continue
 
+    if config.BOOSTING and now >= config.LASTBOOST + timedelta(minutes=15 + random.uniform(0.5, 5)):
+        boost()
+
     gameText = capture_and_recognize_text()
     if handle_verification_code(gameText) is False:
         log("[ERROR] Verification fehlgeschlagen – beende FARMING-Zyklus", True)
@@ -144,7 +150,7 @@ while True:
             log("[DAILY] Waiting for recent verification")
 
     # ----- GREENHOUSE -----
-    if config.GREENHOUSE and now >= (config.LAST_GREENHOUSE_RUN + timedelta(minutes=39)):
+    if config.GREENHOUSE and now >= (config.LAST_GREENHOUSE_RUN + timedelta(minutes=39 + random.uniform(0.5, 3))):
         log("[GREENHOUSE] Running Greenhouse", True)
         greenhouse()
 

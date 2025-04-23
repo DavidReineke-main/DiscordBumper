@@ -2,7 +2,8 @@ import cv2
 import mss
 import numpy as np
 from utils import RECT_FARM_BUTTON, RECT_VERIFY, RECT_CHATBAR, RECT_DISCARD, RECT_BACK, RECT_DAILY, RECT_GREENHOUSE, \
-    RECT_EMPTY_GREENHOUSE, RECT_VERIFY_CODE, RECT_MENU, RECT_COMMAND
+    RECT_EMPTY_GREENHOUSE, RECT_VERIFY_CODE, RECT_MENU, RECT_COMMAND, RECT_BACK_BOOST, RECT_BOOST1, RECT_BOOST2, \
+    RECT_BOOST3, RECT_BOOST
 
 
 def draw_rectangles_on_screenshot(output_path="debug_ui_overlay.png"):
@@ -13,8 +14,8 @@ def draw_rectangles_on_screenshot(output_path="debug_ui_overlay.png"):
 
     rectangles = [
         #(RECT_FARM_BUTTON, (0, 0, 255)),           # Rot
-        (RECT_VERIFY, (0, 255, 0)),                # Grün
-        (RECT_COMMAND, (0, 255, 0)),                # Grün
+        #(RECT_VERIFY, (0, 255, 0)),                # Grün
+        #(RECT_COMMAND, (0, 255, 0)),                # Grün
         #(RECT_CHATBAR, (255, 0, 0)),               # Blau
         #(RECT_DISCARD, (255, 255, 0)),             # Gelb
         #(RECT_BACK, (255, 0, 255)),                # Magenta
@@ -23,6 +24,12 @@ def draw_rectangles_on_screenshot(output_path="debug_ui_overlay.png"):
         #(RECT_VERIFY_CODE, (255, 165, 100)),          # Orange
         #(RECT_MENU, (255, 165, 100)),          # Orange
         #(RECT_EMPTY_GREENHOUSE, (128, 0, 128))     # Lila
+
+        (RECT_BACK_BOOST, (128, 0, 128)),     # Lila
+        (RECT_BOOST, (128, 0, 128)),     # Lila
+        #(RECT_BOOST1, (128, 0, 128)),     # Lila
+        #(RECT_BOOST2, (128, 0, 128)),     # Lila
+        #(RECT_BOOST3, (128, 0, 128))     # Lila
     ]
 
     for rect, color in rectangles:

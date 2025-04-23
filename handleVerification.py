@@ -21,6 +21,7 @@ def handle_verification_code(text):
             config.FARMING = False
             config.DAILY = False
             config.GREENHOUSE = False
+            config.BOOSTING = False
             save_setting_state()
             log("[SECURITY] Deaktiviere alle Features wegen 3x Verify-Fail", True)
             return False  # <<< Abbrechen hier
@@ -61,6 +62,7 @@ def handle_verification_code(text):
         config.FARMING = True
         config.GREENHOUSE = True
         config.DAILY = True
+        config.BOOSTING = True
 
         click_action(RECT_CHATBAR)
         for char in "/play":
@@ -80,6 +82,7 @@ def handle_verification_code(text):
         config.FARMING = False
         config.GREENHOUSE = False
         config.DAILY = False
+        config.BOOSTING = False
 
         save_setting_state()
         return True
