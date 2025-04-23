@@ -19,15 +19,6 @@ def farm():
     log(f"[INFO] Current Farmtime: {config.FARMTIME}s")
     click_action(RECT_FARM_BUTTON)
 
-    detected_text = capture_and_recognize_text()
-
-    verify_result = handle_verification_code(detected_text)
-
-    # Wenn handle_verification_code False zurückgibt, abbrechen
-    if verify_result is False:
-        log("[ERROR] Verification fehlgeschlagen – beende FARMING-Zyklus", True)
-        return False
-
     # Zeitberechnung und Planung
     execution_time = (datetime.now() - now).total_seconds()
     remaining_time = max(config.FARMTIME - execution_time, 0) + random.uniform(0.1, 0.15)

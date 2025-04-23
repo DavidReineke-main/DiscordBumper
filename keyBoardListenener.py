@@ -11,6 +11,8 @@ def control_loop():
             cmd = input("[INPUT] Befehl eingeben (f = Farming umschalten, b = Bumping umschalten, q = Beenden): ").strip().lower()
             if cmd == "f":
                 config.FARMING = not config.FARMING
+                config.DAILY = not config.DAILY
+                config.GREENHOUSE = not config.GREENHOUSE
                 state = "aktiviert" if config.FARMING else "deaktiviert"
                 save_setting_state()
                 log(f"[TOGGLE] FARMING wurde {state}")

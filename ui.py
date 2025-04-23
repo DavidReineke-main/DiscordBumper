@@ -2,7 +2,7 @@ import cv2
 import mss
 import numpy as np
 from utils import RECT_FARM_BUTTON, RECT_VERIFY, RECT_CHATBAR, RECT_DISCARD, RECT_BACK, RECT_DAILY, RECT_GREENHOUSE, \
-    RECT_EMPTY_GREENHOUSE
+    RECT_EMPTY_GREENHOUSE, RECT_VERIFY_CODE, RECT_MENU, RECT_COMMAND
 
 
 def draw_rectangles_on_screenshot(output_path="debug_ui_overlay.png"):
@@ -12,14 +12,17 @@ def draw_rectangles_on_screenshot(output_path="debug_ui_overlay.png"):
         img_bgr = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
 
     rectangles = [
-        (RECT_FARM_BUTTON, (0, 0, 255)),           # Rot
+        #(RECT_FARM_BUTTON, (0, 0, 255)),           # Rot
         (RECT_VERIFY, (0, 255, 0)),                # Grün
-        (RECT_CHATBAR, (255, 0, 0)),               # Blau
-        (RECT_DISCARD, (255, 255, 0)),             # Gelb
-        (RECT_BACK, (255, 0, 255)),                # Magenta
-        (RECT_DAILY, (0, 255, 255)),               # Cyan
-        (RECT_GREENHOUSE, (255, 165, 0)),          # Orange
-        (RECT_EMPTY_GREENHOUSE, (128, 0, 128))     # Lila
+        (RECT_COMMAND, (0, 255, 0)),                # Grün
+        #(RECT_CHATBAR, (255, 0, 0)),               # Blau
+        #(RECT_DISCARD, (255, 255, 0)),             # Gelb
+        #(RECT_BACK, (255, 0, 255)),                # Magenta
+        #(RECT_DAILY, (0, 255, 255)),               # Cyan
+        #(RECT_GREENHOUSE, (255, 165, 0)),          # Orange
+        #(RECT_VERIFY_CODE, (255, 165, 100)),          # Orange
+        #(RECT_MENU, (255, 165, 100)),          # Orange
+        #(RECT_EMPTY_GREENHOUSE, (128, 0, 128))     # Lila
     ]
 
     for rect, color in rectangles:

@@ -16,9 +16,10 @@ def save_setting_state():
             "CURRENTTAB": config.CURRENTTAB,
             "GREENHOUSE": config.GREENHOUSE,
             "NEXT_DAILY_RUN": config.NEXT_DAILY_RUN.isoformat(),
-            "NEXT_GREENHOUSE_RUN": config.NEXT_GREENHOUSE_RUN.isoformat(),
+            "LAST_GREENHOUSE_RUN": config.LAST_GREENHOUSE_RUN.isoformat(),
             "LASTVERIFY": config.LASTVERIFY.isoformat(),
-            "DAILY": config.DAILY
+            "DAILY": config.DAILY,
+            "STOPPED": config.STOPPED
         }, f)
 
 def load_setting_state():
@@ -36,9 +37,10 @@ def load_setting_state():
             config.CURRENTTAB = data["CURRENTTAB"]
             config.GREENHOUSE = data["GREENHOUSE"]
             config.NEXT_DAILY_RUN = datetime.fromisoformat(data["NEXT_DAILY_RUN"])
-            config.NEXT_GREENHOUSE_RUN = datetime.fromisoformat(data["NEXT_GREENHOUSE_RUN"])
+            config.LAST_GREENHOUSE_RUN = datetime.fromisoformat(data["LAST_GREENHOUSE_RUN"])
             config.LASTVERIFY = datetime.fromisoformat(data["LASTVERIFY"])
             config.DAILY = data["DAILY"]
+            config.STOPPED = data["STOPPED"]
 
             return None
         except Exception as e:
