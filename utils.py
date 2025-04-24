@@ -7,7 +7,7 @@ import pytesseract
 RECT_FARM_BUTTON = {"x1": 450, "y1": 915, "width": 67, "height": 35}
 RECT_VERIFY = {"x1": 450, "y1": 820, "width": 370, "height": 100}
 RECT_COMMAND = {"x1": 440, "y1": 900, "width": 370, "height": 80}
-RECT_CHATBAR = {"x1": 470, "y1": 995, "width": 100, "height": 30}
+RECT_CHATBAR = {"x1": 450, "y1": 995, "width": 20, "height": 30}
 RECT_DISCARD = {"x1": 710, "y1": 952, "width": 60, "height": 10}
 RECT_BACK = {"x1": 520, "y1": 915, "width": 67, "height": 35}
 RECT_DAILY = {"x1": 550, "y1":880, "width": 67, "height": 35}

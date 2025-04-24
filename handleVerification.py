@@ -85,7 +85,7 @@ def handle_verification_code(text):
         config.BOOSTING = False
 
         save_setting_state()
-        return True
+        return False
 
     elif "You must wait" in text:
         try:

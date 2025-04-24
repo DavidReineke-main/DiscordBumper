@@ -63,6 +63,8 @@ config.CURRENTTAB = 1
 config.LASTVERIFY = datetime.now()
 config.LASTBOOST = datetime.now()
 config.STOPPED = False
+duplicateText = 0
+textBuffer = ''
 
 
 # Lade gespeicherte Zustände
@@ -91,8 +93,6 @@ else:
 # Keyboard Listener starten
 thread = threading.Thread(target=control_loop, daemon=True)
 thread.start()
-log("[INFO] Startup pause – 5 Sekunden")
-time.sleep(0)
 
 # ----- MAIN LOOP -----
 log("[INFO] Starte Hauptloop...")
@@ -110,22 +110,44 @@ while True:
     #    time.sleep(1)
     #    continue
 
-    text = capture_and_recognize_textCommand()
-    handle_verification_code(text)
+    commandText = capture_and_recognize_textCommand()
+    if handle_verification_code(commandText) is False:
+        continue
 
     if config.STOPPED:
         time.sleep(2)
         continue
 
+    gameText = capture_and_recognize_text()
+    print(gameText)
+    if gameText == textBuffer:
+        duplicateText += 1
+        print('Got the same text ' + str(duplicateText) + ' times')
+        if duplicateText >= 10:
+            log('MULTIPLE DUPLICATE TEXT DETECTED 10 TIMES IN A ROW, RESTARTING FARMING', True)
+
+            click_action(RECT_CHATBAR)
+            for char in "/play":
+                pyautogui.typewrite(char)
+                time.sleep(random.uniform(0.1, 0.5))
+
+            pyautogui.press("enter")
+            pyautogui.press("enter")
+            duplicateText = 0
+
+    textBuffer = gameText
+
+
     if config.BOOSTING and now >= config.LASTBOOST + timedelta(minutes=15 + random.uniform(0.5, 5)):
         boost()
 
-    gameText = capture_and_recognize_text()
     if handle_verification_code(gameText) is False:
         log("[ERROR] Verification fehlgeschlagen – beende FARMING-Zyklus", True)
         click_action(RECT_CHATBAR)
 
         pyautogui.typewrite('@')
+        time.sleep(1)
+        pyautogui.typewrite('@D')
         time.sleep(1)
         pyautogui.press("enter")
         time.sleep(1)
@@ -136,6 +158,8 @@ while True:
 
         pyautogui.press("enter")
 
+        config.STOPPED = True
+        save_setting_state()
 
     # ----- FARMING -----
     if config.FARMING and now >= config.NEXT_FARMTIME:

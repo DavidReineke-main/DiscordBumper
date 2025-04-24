@@ -13,10 +13,10 @@ def draw_rectangles_on_screenshot(output_path="debug_ui_overlay.png"):
         img_bgr = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
 
     rectangles = [
-        #(RECT_FARM_BUTTON, (0, 0, 255)),           # Rot
-        #(RECT_VERIFY, (0, 255, 0)),                # Grün
-        #(RECT_COMMAND, (0, 255, 0)),                # Grün
-        #(RECT_CHATBAR, (255, 0, 0)),               # Blau
+        (RECT_FARM_BUTTON, (0, 0, 255)),           # Rot
+        (RECT_VERIFY, (0, 255, 0)),                # Grün
+        (RECT_COMMAND, (0, 255, 0)),                # Grün
+        (RECT_CHATBAR, (255, 0, 0)),               # Blau
         #(RECT_DISCARD, (255, 255, 0)),             # Gelb
         #(RECT_BACK, (255, 0, 255)),                # Magenta
         #(RECT_DAILY, (0, 255, 255)),               # Cyan
