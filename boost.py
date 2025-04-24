@@ -22,5 +22,6 @@ def boost():
     time.sleep(2)
 
     config.LASTBOOST = datetime.now()
+    config.FARMTIME = 1.0
     return
 

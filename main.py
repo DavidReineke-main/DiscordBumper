@@ -65,6 +65,7 @@ config.LASTBOOST = datetime.now()
 config.STOPPED = False
 duplicateText = 0
 textBuffer = ''
+farming = 0
 
 
 # Lade gespeicherte Zustände
@@ -119,10 +120,10 @@ while True:
         continue
 
     gameText = capture_and_recognize_text()
-    print(gameText)
+
     if gameText == textBuffer:
         duplicateText += 1
-        print('Got the same text ' + str(duplicateText) + ' times')
+        log('Got the same text ' + str(duplicateText) + ' times', True)
         if duplicateText >= 10:
             log('MULTIPLE DUPLICATE TEXT DETECTED 10 TIMES IN A ROW, RESTARTING FARMING', True)
 
@@ -164,6 +165,9 @@ while True:
     # ----- FARMING -----
     if config.FARMING and now >= config.NEXT_FARMTIME:
         farm()
+        farming += 1
+        if farming >= 20:
+            config.FARMTIME = 1.0
 
     # ----- DAILY -----
     if config.DAILY and now >= config.NEXT_DAILY_RUN:
